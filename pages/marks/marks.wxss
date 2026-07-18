@@ -1,0 +1,33 @@
+/* pages/marks/marks.wxss */
+@import "/pages/proforma/proforma.wxss";
+
+/* —— 唛头盒子 —— */
+.marks-box {
+  border: 4rpx solid #1e293b;
+  border-radius: 8rpx;
+  padding: 40rpx 32rpx;
+  margin: 24rpx 0;
+  text-align: center;
+}
+.marks-line {
+  height: 2rpx;
+  background: #1e293b;
+  margin: 24rpx 0;
+}
+.marks-field {
+  padding: 12rpx 0;
+}
+.marks-label {
+  display: block;
+  font-size: 26rpx;
+  font-weight: 700;
+  color: #1e293b;
+  letter-spacing: 2rpx;
+}
+.marks-value {
+  display: block;
+  font-size: 30rpx;
+  color: #334155;
+  margin-top: 8rpx;
+  font-weight: 600;
+}
