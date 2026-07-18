@@ -1,0 +1,191 @@
+<!-- pages/packing/packing.wxml -->
+<view class="page-header">
+  <view class="page-title">装箱单</view>
+  <view class="page-subtitle">Packing List</view>
+</view>
+
+<view class="btn-group">
+  <button class="btn btn-outline btn-sm" bindtap="onPreview">👁️ 预览</button>
+  <button class="btn btn-outline btn-sm" bindtap="onSave">💾 保存</button>
+  <button class="btn btn-danger btn-sm" bindtap="onClear">🗑️ 清空</button>
+</view>
+
+<!-- 编辑模式 -->
+<view wx:if="{{!showPreview}}">
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>装箱信息</view></view>
+    <view class="card-body">
+      <view class="form-grid">
+        <view class="form-group">
+          <text class="form-label">发票号/参考号 *</text>
+          <input class="form-input" value="{{form.invNo}}" bindinput="onInput" data-key="invNo" placeholder="PL-2026-001"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">日期</text>
+          <picker mode="date" value="{{form.date}}" bindchange="onDateChange" data-key="date">
+            <view class="form-input">{{form.date || '选择日期'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">贸易条款</text>
+          <picker range="{{termsList}}" value="{{form.termsIndex}}" bindchange="onPickerChange" data-key="terms">
+            <view class="form-input">{{form.terms || '选择'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">买方</text>
+          <input class="form-input" value="{{form.buyer}}" bindinput="onInput" data-key="buyer" placeholder="ABC Trading Co."/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">起运港</text>
+          <input class="form-input" value="{{form.from}}" bindinput="onInput" data-key="from" placeholder="Shanghai"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">目的港</text>
+          <input class="form-input" value="{{form.to}}" bindinput="onInput" data-key="to" placeholder="Hamburg"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <view class="card-title"><view class="dot"></view>装箱明细</view>
+      <button class="btn btn-primary btn-sm" bindtap="addRow">+ 添加</button>
+    </view>
+    <view class="card-body" wx:if="{{form.items.length > 0}}">
+      <view class="item-row" wx:for="{{form.items}}" wx:key="index">
+        <view class="item-row-header">
+          <text class="item-no">行 {{index + 1}}</text>
+          <text class="item-del" bindtap="delRow" data-index="{{index}}">删除</text>
+        </view>
+        <view class="form-grid">
+          <view class="form-group">
+            <text class="form-label">箱号</text>
+            <input class="form-input" value="{{item.cartonNo}}" bindinput="onItemInput" data-index="{{index}}" data-key="cartonNo" placeholder="C-1"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">描述</text>
+            <input class="form-input" value="{{item.desc}}" bindinput="onItemInput" data-index="{{index}}" data-key="desc" placeholder="Product description"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">数量</text>
+            <input class="form-input" type="digit" value="{{item.qty}}" bindinput="onItemInput" data-index="{{index}}" data-key="qty"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">单位</text>
+            <input class="form-input" value="{{item.unit}}" bindinput="onItemInput" data-index="{{index}}" data-key="unit" placeholder="PCS"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">净重 NW (kg)</text>
+            <input class="form-input" type="digit" value="{{item.nw}}" bindinput="onItemInput" data-index="{{index}}" data-key="nw"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">毛重 GW (kg)</text>
+            <input class="form-input" type="digit" value="{{item.gw}}" bindinput="onItemInput" data-index="{{index}}" data-key="gw"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">长 L (cm)</text>
+            <input class="form-input" type="digit" value="{{item.l}}" bindinput="onItemInput" data-index="{{index}}" data-key="l"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">宽 W (cm)</text>
+            <input class="form-input" type="digit" value="{{item.w}}" bindinput="onItemInput" data-index="{{index}}" data-key="w"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">高 H (cm)</text>
+            <input class="form-input" type="digit" value="{{item.h}}" bindinput="onItemInput" data-index="{{index}}" data-key="h"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="card-body" wx:else>
+      <view class="empty-tip">暂无装箱数据，点击"添加"按钮</view>
+    </view>
+  </view>
+</view>
+
+<!-- 预览模式 -->
+<view wx:if="{{showPreview}}">
+  <view class="btn-group">
+    <button class="btn btn-outline btn-sm" bindtap="onPreview">✕ 返回编辑</button>
+  </view>
+  <view class="doc-paper">
+    <view class="doc-header">
+      <view>
+        <view class="doc-company">{{companyName}}</view>
+        <view class="doc-company-sub">{{companyAddr}}</view>
+      </view>
+      <view>
+        <view class="doc-title">Packing List</view>
+        <view class="doc-meta">
+          <text><text style="font-weight:600">No.:</text> {{form.invNo}}</text>\n
+          <text><text style="font-weight:600">Date:</text> {{form.date}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="doc-parties">
+      <view class="doc-party-block">
+        <view class="label">Shipper / 发货方</view>
+        <view class="content"><text style="font-weight:600">{{companyName}}</text></view>
+      </view>
+      <view class="doc-party-block">
+        <view class="label">Consignee / 收货方</view>
+        <view class="content">
+          <text style="font-weight:600">{{form.buyer}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="doc-footer-info">
+      <view class="doc-footer-block">
+        <view class="content">
+          <text><text style="font-weight:600">Terms:</text> {{form.terms}}</text>\n
+          <text><text style="font-weight:600">From:</text> {{form.from}}</text>\n
+          <text><text style="font-weight:600">To:</text> {{form.to}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="doc-table-wrap">
+      <view class="doc-table-row doc-table-header">
+        <text class="col-carton">Carton No.</text>
+        <text class="col-desc">Description</text>
+        <text class="col-qty">Qty</text>
+        <text class="col-unit">Unit</text>
+        <text class="col-nw">N.W.(kg)</text>
+        <text class="col-gw">G.W.(kg)</text>
+        <text class="col-cbm">CBM</text>
+      </view>
+      <view class="doc-table-row" wx:for="{{form.items}}" wx:key="index">
+        <text class="col-carton">{{item.cartonNo}}</text>
+        <text class="col-desc">{{item.desc}}</text>
+        <text class="col-qty num">{{item.qty}}</text>
+        <text class="col-unit">{{item.unit}}</text>
+        <text class="col-nw num">{{item.nw}}</text>
+        <text class="col-gw num">{{item.gw}}</text>
+        <text class="col-cbm num">{{item._cbm}}</text>
+      </view>
+      <view class="doc-table-row doc-table-footer">
+        <text class="col-total-label" style="flex:1;text-align:right">Total:</text>
+        <text class="col-qty num" style="font-weight:700">{{totalQty}}</text>
+        <text class="col-unit"></text>
+        <text class="col-nw num" style="font-weight:700">{{totalNW}}</text>
+        <text class="col-gw num" style="font-weight:700">{{totalGW}}</text>
+        <text class="col-cbm num" style="font-weight:700">{{totalCBM}}</text>
+      </view>
+    </view>
+
+    <view class="doc-signature">
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Authorized Signature</view>
+      </view>
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Company Stamp</view>
+      </view>
+    </view>
+  </view>
+</view>
