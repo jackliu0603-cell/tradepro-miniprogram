@@ -1,0 +1,131 @@
+<!-- pages/spec/spec.wxml -->
+<view class="page-header">
+  <view class="page-title">规格书</view>
+  <view class="page-subtitle">Product Specification</view>
+</view>
+
+<view class="btn-group">
+  <button class="btn btn-outline btn-sm" bindtap="onPreview">👁️ 预览</button>
+  <button class="btn btn-outline btn-sm" bindtap="onSave">💾 保存</button>
+  <button class="btn btn-danger btn-sm" bindtap="onClear">🗑️ 清空</button>
+</view>
+
+<!-- 编辑模式 -->
+<view wx:if="{{!showPreview}}">
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>产品信息</view></view>
+    <view class="card-body">
+      <view class="form-grid">
+        <view class="form-group full">
+          <text class="form-label">产品名称 *</text>
+          <input class="form-input" value="{{form.name}}" bindinput="onInput" data-key="name" placeholder="Product Name"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">品牌</text>
+          <input class="form-input" value="{{form.brand}}" bindinput="onInput" data-key="brand" placeholder="Brand"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">型号</text>
+          <input class="form-input" value="{{form.model}}" bindinput="onInput" data-key="model" placeholder="Model No."/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">原产地</text>
+          <input class="form-input" value="{{form.origin}}" bindinput="onInput" data-key="origin" placeholder="China"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">材质</text>
+          <input class="form-input" value="{{form.material}}" bindinput="onInput" data-key="material" placeholder="Material"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">尺寸</text>
+          <input class="form-input" value="{{form.size}}" bindinput="onInput" data-key="size" placeholder="300×200×50mm"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">重量</text>
+          <input class="form-input" value="{{form.weight}}" bindinput="onInput" data-key="weight" placeholder="0.5kg"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">包装</text>
+          <input class="form-input" value="{{form.package}}" bindinput="onInput" data-key="package" placeholder="Carton / Box"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>产品描述</view></view>
+    <view class="card-body">
+      <view class="form-group full">
+        <textarea class="form-textarea" value="{{form.description}}" bindinput="onInput" data-key="description" placeholder="Detailed product description..." style="min-height:200rpx"/>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 预览模式 -->
+<view wx:if="{{showPreview}}">
+  <view class="btn-group">
+    <button class="btn btn-outline btn-sm" bindtap="onPreview">✕ 返回编辑</button>
+  </view>
+  <view class="doc-paper">
+    <view class="doc-header">
+      <view>
+        <view class="doc-company">{{companyName}}</view>
+        <view class="doc-company-sub">{{companyAddr}}</view>
+      </view>
+      <view>
+        <view class="doc-title">Product Specification</view>
+      </view>
+    </view>
+
+    <view class="spec-table-wrap">
+      <view class="spec-table-row">
+        <text class="spec-col-label">Product Name</text>
+        <text class="spec-col-value">{{form.name}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Brand</text>
+        <text class="spec-col-value">{{form.brand}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Model</text>
+        <text class="spec-col-value">{{form.model}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Origin</text>
+        <text class="spec-col-value">{{form.origin}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Material</text>
+        <text class="spec-col-value">{{form.material}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Size</text>
+        <text class="spec-col-value">{{form.size}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Weight</text>
+        <text class="spec-col-value">{{form.weight}}</text>
+      </view>
+      <view class="spec-table-row">
+        <text class="spec-col-label">Package</text>
+        <text class="spec-col-value">{{form.package}}</text>
+      </view>
+      <view class="spec-table-row spec-table-desc" wx:if="{{form.description}}">
+        <text class="spec-col-label">Description</text>
+        <text class="spec-col-value">{{form.description}}</text>
+      </view>
+    </view>
+
+    <view class="doc-signature">
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Authorized Signature</view>
+      </view>
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Company Stamp</view>
+      </view>
+    </view>
+  </view>
+</view>
