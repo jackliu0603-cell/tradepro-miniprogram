@@ -1,0 +1,2 @@
+/* pages/salescontract/salescontract.wxss */
+@import "/pages/proforma/proforma.wxss";
