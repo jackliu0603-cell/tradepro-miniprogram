@@ -1,0 +1,5 @@
+/* pages/commercial/commercial.wxss */
+@import "/pages/proforma/proforma.wxss";
+
+/* —— HS Code 列 —— */
+.col-hs { width: 120rpx; text-align: center; font-size: 20rpx; }
