@@ -1,0 +1,84 @@
+<!-- pages/index/index.wxml -->
+<view class="page-header">
+  <view class="page-title">外贸单据工具</view>
+  <view class="page-subtitle">TradePro Export Tools · 移动版</view>
+</view>
+
+<view class="card">
+  <view class="card-header">
+    <view class="card-title"><view class="dot"></view>单据列表</view>
+  </view>
+  <view class="card-body">
+    <view class="doc-list">
+      <view class="doc-item" bindtap="goPage" data-url="/pages/proforma/proforma">
+        <view class="doc-icon" style="background:#3b82f6">PI</view>
+        <view class="doc-info">
+          <view class="doc-name">形式发票</view>
+          <view class="doc-desc">Proforma Invoice</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+
+      <view class="doc-item" bindtap="goPage" data-url="/pages/salescontract/salescontract">
+        <view class="doc-icon" style="background:#8b5cf6">SC</view>
+        <view class="doc-info">
+          <view class="doc-name">销售合同</view>
+          <view class="doc-desc">Sales Contract</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+
+      <view class="doc-item" bindtap="goPage" data-url="/pages/commercial/commercial">
+        <view class="doc-icon" style="background:#f59e0b">CI</view>
+        <view class="doc-info">
+          <view class="doc-name">商业发票</view>
+          <view class="doc-desc">Commercial Invoice</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+
+      <view class="doc-item" bindtap="goPage" data-url="/pages/packing/packing">
+        <view class="doc-icon" style="background:#10b981">PL</view>
+        <view class="doc-info">
+          <view class="doc-name">装箱单</view>
+          <view class="doc-desc">Packing List</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+
+      <view class="doc-item" bindtap="goPage" data-url="/pages/marks/marks">
+        <view class="doc-icon" style="background:#ec4899">MK</view>
+        <view class="doc-info">
+          <view class="doc-name">唛头</view>
+          <view class="doc-desc">Shipping Marks</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+
+      <view class="doc-item" bindtap="goPage" data-url="/pages/spec/spec">
+        <view class="doc-icon" style="background:#6366f1">SP</view>
+        <view class="doc-info">
+          <view class="doc-name">产品规格书</view>
+          <view class="doc-desc">Product Specification</view>
+        </view>
+        <view class="doc-arrow">›</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<view class="card">
+  <view class="card-header">
+    <view class="card-title"><view class="dot"></view>快捷操作</view>
+  </view>
+  <view class="card-body">
+    <view class="btn-group" style="padding:0">
+      <button class="btn btn-primary btn-sm" bindtap="syncFromPI">⚡ 一键同步PI到所有单据</button>
+      <button class="btn btn-outline btn-sm" bindtap="clearAll">🗑️ 清空所有数据</button>
+    </view>
+  </view>
+</view>
+
+<view class="tip-text">
+  提示：先填写形式发票(PI)，点击"一键同步"可自动填充其他单据。数据自动保存在本地。
+</view>
