@@ -1,0 +1,51 @@
+/* pages/index/index.wxss */
+.doc-list {
+  display: flex;
+  flex-direction: column;
+}
+.doc-item {
+  display: flex;
+  align-items: center;
+  padding: 24rpx 0;
+  border-bottom: 1rpx solid #f1f5f9;
+}
+.doc-item:last-child {
+  border-bottom: none;
+}
+.doc-icon {
+  width: 72rpx;
+  height: 72rpx;
+  border-radius: 16rpx;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-size: 24rpx;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.doc-info {
+  flex: 1;
+  margin-left: 24rpx;
+}
+.doc-name {
+  font-size: 30rpx;
+  font-weight: 600;
+  color: #1e293b;
+}
+.doc-desc {
+  font-size: 22rpx;
+  color: #94a3b8;
+  margin-top: 4rpx;
+}
+.doc-arrow {
+  font-size: 40rpx;
+  color: #cbd5e1;
+}
+.tip-text {
+  text-align: center;
+  font-size: 24rpx;
+  color: #94a3b8;
+  padding: 40rpx 48rpx;
+  line-height: 1.6;
+}
