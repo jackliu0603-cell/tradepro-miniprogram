@@ -1,0 +1,83 @@
+<!-- pages/marks/marks.wxml -->
+<view class="page-header">
+  <view class="page-title">唛头</view>
+  <view class="page-subtitle">Shipping Marks</view>
+</view>
+
+<view class="btn-group">
+  <button class="btn btn-outline btn-sm" bindtap="onPreview">👁️ 预览</button>
+  <button class="btn btn-outline btn-sm" bindtap="onSave">💾 保存</button>
+  <button class="btn btn-danger btn-sm" bindtap="onClear">🗑️ 清空</button>
+</view>
+
+<!-- 编辑模式 -->
+<view wx:if="{{!showPreview}}">
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>唛头信息</view></view>
+    <view class="card-body">
+      <view class="form-grid">
+        <view class="form-group full">
+          <text class="form-label">收货人 Consignee</text>
+          <input class="form-input" value="{{form.consignee}}" bindinput="onInput" data-key="consignee" placeholder="ABC Trading Co."/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">目的港 Port</text>
+          <input class="form-input" value="{{form.port}}" bindinput="onInput" data-key="port" placeholder="Hamburg"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">品名 Item</text>
+          <input class="form-input" value="{{form.item}}" bindinput="onInput" data-key="item" placeholder="Product Name"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">规格 Spec</text>
+          <input class="form-input" value="{{form.spec}}" bindinput="onInput" data-key="spec" placeholder="Specification"/>
+        </view>
+        <view class="form-group full">
+          <text class="form-label">箱数信息 Carton Info</text>
+          <input class="form-input" value="{{form.cartonInfo}}" bindinput="onInput" data-key="cartonInfo" placeholder="C/NO: 1-100"/>
+        </view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 预览模式 -->
+<view wx:if="{{showPreview}}">
+  <view class="btn-group">
+    <button class="btn btn-outline btn-sm" bindtap="onPreview">✕ 返回编辑</button>
+  </view>
+  <view class="doc-paper">
+    <view class="marks-box">
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{form.consignee}}">
+        <text class="marks-label">CONSIGNEE:</text>
+        <text class="marks-value">{{form.consignee}}</text>
+      </view>
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{form.port}}">
+        <text class="marks-label">PORT:</text>
+        <text class="marks-value">{{form.port}}</text>
+      </view>
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{form.item}}">
+        <text class="marks-label">ITEM:</text>
+        <text class="marks-value">{{form.item}}</text>
+      </view>
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{form.spec}}">
+        <text class="marks-label">SPEC:</text>
+        <text class="marks-value">{{form.spec}}</text>
+      </view>
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{form.cartonInfo}}">
+        <text class="marks-label">C/NO:</text>
+        <text class="marks-value">{{form.cartonInfo}}</text>
+      </view>
+      <view class="marks-line"></view>
+      <view class="marks-field" wx:if="{{companyName}}">
+        <text class="marks-label">MADE IN CHINA</text>
+      </view>
+      <view class="marks-line"></view>
+    </view>
+  </view>
+</view>
