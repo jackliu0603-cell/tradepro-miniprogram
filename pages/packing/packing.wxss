@@ -1,0 +1,8 @@
+/* pages/packing/packing.wxss */
+@import "/pages/proforma/proforma.wxss";
+
+/* —— 装箱单表格列宽 —— */
+.col-carton { width: 120rpx; text-align: center; }
+.col-nw { width: 110rpx; text-align: right; }
+.col-gw { width: 110rpx; text-align: right; }
+.col-cbm { width: 130rpx; text-align: right; }
