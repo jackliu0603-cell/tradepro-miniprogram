@@ -1,0 +1,36 @@
+/* pages/spec/spec.wxss */
+@import "/pages/proforma/proforma.wxss";
+
+/* —— 规格表 —— */
+.spec-table-wrap {
+  margin: 24rpx 0;
+  border: 1rpx solid #cbd5e1;
+  border-radius: 8rpx;
+  overflow: hidden;
+}
+.spec-table-row {
+  display: flex;
+  align-items: flex-start;
+  border-bottom: 1rpx solid #e2e8f0;
+  font-size: 26rpx;
+}
+.spec-table-row:last-child {
+  border-bottom: none;
+}
+.spec-col-label {
+  width: 220rpx;
+  padding: 20rpx 24rpx;
+  background: #f1f5f9;
+  font-weight: 600;
+  color: #475569;
+  flex-shrink: 0;
+}
+.spec-col-value {
+  flex: 1;
+  padding: 20rpx 24rpx;
+  color: #334155;
+  line-height: 1.6;
+}
+.spec-table-desc .spec-col-value {
+  white-space: pre-wrap;
+}
