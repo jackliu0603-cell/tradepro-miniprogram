@@ -1,0 +1,40 @@
+{
+  "pages": [
+    "pages/index/index",
+    "pages/proforma/proforma",
+    "pages/salescontract/salescontract",
+    "pages/commercial/commercial",
+    "pages/packing/packing",
+    "pages/marks/marks",
+    "pages/spec/spec"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#1e293b",
+    "navigationBarTitleText": "外贸单据工具",
+    "navigationBarTextStyle": "white",
+    "backgroundColor": "#f1f5f9"
+  },
+  "tabBar": {
+    "color": "#64748b",
+    "selectedColor": "#3b82f6",
+    "backgroundColor": "#ffffff",
+    "borderStyle": "white",
+    "list": [
+      {
+        "pagePath": "pages/index/index",
+        "text": "首页"
+      },
+      {
+        "pagePath": "pages/proforma/proforma",
+        "text": "形式发票"
+      },
+      {
+        "pagePath": "pages/packing/packing",
+        "text": "装箱单"
+      }
+    ]
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}
