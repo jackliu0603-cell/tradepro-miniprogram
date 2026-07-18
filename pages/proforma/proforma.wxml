@@ -1,0 +1,252 @@
+<!-- pages/proforma/proforma.wxml -->
+<view class="page-header">
+  <view class="page-title">形式发票</view>
+  <view class="page-subtitle">Proforma Invoice</view>
+</view>
+
+<view class="btn-group">
+  <button class="btn btn-primary btn-sm" bindtap="onSync">⚡ 一键同步</button>
+  <button class="btn btn-outline btn-sm" bindtap="onPreview">👁️ 预览</button>
+  <button class="btn btn-outline btn-sm" bindtap="onSave">💾 保存</button>
+  <button class="btn btn-danger btn-sm" bindtap="onClear">🗑️ 清空</button>
+</view>
+
+<!-- 编辑模式 -->
+<view wx:if="{{!showPreview}}">
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>发票信息</view></view>
+    <view class="card-body">
+      <view class="form-grid">
+        <view class="form-group">
+          <text class="form-label">发票号 *</text>
+          <input class="form-input" value="{{form.no}}" bindinput="onInput" data-key="no" placeholder="PI-2026-001"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">日期</text>
+          <picker mode="date" value="{{form.date}}" bindchange="onDateChange" data-key="date">
+            <view class="form-input">{{form.date || '选择日期'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">有效期至</text>
+          <picker mode="date" value="{{form.valid}}" bindchange="onDateChange" data-key="valid">
+            <view class="form-input">{{form.valid || '选择日期'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">贸易条款</text>
+          <picker range="{{termsList}}" value="{{form.termsIndex}}" bindchange="onPickerChange" data-key="terms">
+            <view class="form-input">{{form.terms || '选择'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">起运港</text>
+          <input class="form-input" value="{{form.from}}" bindinput="onInput" data-key="from" placeholder="Shanghai"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">目的港</text>
+          <input class="form-input" value="{{form.to}}" bindinput="onInput" data-key="to" placeholder="Hamburg"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">付款方式</text>
+          <picker range="{{paymentList}}" value="{{form.paymentIndex}}" bindchange="onPickerChange" data-key="payment">
+            <view class="form-input">{{form.payment || '选择'}}</view>
+          </picker>
+        </view>
+        <view class="form-group">
+          <text class="form-label">货币</text>
+          <input class="form-input" value="{{form.currency}}" bindinput="onInput" data-key="currency" placeholder="USD"/>
+        </view>
+        <view class="form-group full">
+          <text class="form-label">交货期</text>
+          <input class="form-input" value="{{form.delivery}}" bindinput="onInput" data-key="delivery" placeholder="Within 30 days"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>买方信息</view></view>
+    <view class="card-body">
+      <view class="form-grid">
+        <view class="form-group">
+          <text class="form-label">买方名称</text>
+          <input class="form-input" value="{{form.buyerName}}" bindinput="onInput" data-key="buyerName" placeholder="ABC Trading Co."/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">联系人</text>
+          <input class="form-input" value="{{form.buyerContact}}" bindinput="onInput" data-key="buyerContact" placeholder="John Smith"/>
+        </view>
+        <view class="form-group full">
+          <text class="form-label">地址</text>
+          <textarea class="form-textarea" value="{{form.buyerAddr}}" bindinput="onInput" data-key="buyerAddr" placeholder="No. 123 Main Street..."/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">电话</text>
+          <input class="form-input" value="{{form.buyerTel}}" bindinput="onInput" data-key="buyerTel" placeholder="+49 40 1234567"/>
+        </view>
+        <view class="form-group">
+          <text class="form-label">邮箱</text>
+          <input class="form-input" value="{{form.buyerEmail}}" bindinput="onInput" data-key="buyerEmail" placeholder="john@abctrading.com"/>
+        </view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header">
+      <view class="card-title"><view class="dot"></view>产品明细</view>
+      <button class="btn btn-primary btn-sm" bindtap="addRow">+ 添加</button>
+    </view>
+    <view class="card-body" wx:if="{{form.items.length > 0}}">
+      <view class="item-row" wx:for="{{form.items}}" wx:key="index">
+        <view class="item-row-header">
+          <text class="item-no">行 {{index + 1}}</text>
+          <text class="item-del" bindtap="delRow" data-index="{{index}}">删除</text>
+        </view>
+        <view class="form-grid">
+          <view class="form-group full">
+            <text class="form-label">描述</text>
+            <input class="form-input" value="{{item.desc}}" bindinput="onItemInput" data-index="{{index}}" data-key="desc" placeholder="Product description"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">规格</text>
+            <input class="form-input" value="{{item.spec}}" bindinput="onItemInput" data-index="{{index}}" data-key="spec"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">数量</text>
+            <input class="form-input" type="digit" value="{{item.qty}}" bindinput="onItemInput" data-index="{{index}}" data-key="qty"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">单位</text>
+            <input class="form-input" value="{{item.unit}}" bindinput="onItemInput" data-index="{{index}}" data-key="unit" placeholder="PCS"/>
+          </view>
+          <view class="form-group">
+            <text class="form-label">单价</text>
+            <input class="form-input" type="digit" value="{{item.price}}" bindinput="onItemInput" data-index="{{index}}" data-key="price"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="card-body" wx:else>
+      <view class="empty-tip">暂无产品，点击"添加"按钮</view>
+    </view>
+  </view>
+
+  <view class="card">
+    <view class="card-header"><view class="card-title"><view class="dot"></view>备注 & 银行信息</view></view>
+    <view class="card-body">
+      <view class="form-group full" style="margin-bottom:20rpx">
+        <text class="form-label">备注</text>
+        <textarea class="form-textarea" value="{{form.remarks}}" bindinput="onInput" data-key="remarks" placeholder="Remarks..."/>
+      </view>
+      <view class="form-group full">
+        <text class="form-label">银行信息</text>
+        <textarea class="form-textarea" value="{{form.bank}}" bindinput="onInput" data-key="bank" placeholder="Bank Name:&#10;Account Name:&#10;Account No.:&#10;SWIFT Code:"/>
+      </view>
+    </view>
+  </view>
+</view>
+
+<!-- 预览模式 -->
+<view wx:if="{{showPreview}}">
+  <view class="btn-group">
+    <button class="btn btn-outline btn-sm" bindtap="onPreview">✕ 返回编辑</button>
+  </view>
+  <view class="doc-paper">
+    <view class="doc-header">
+      <view>
+        <view class="doc-company">{{companyName}}</view>
+        <view class="doc-company-sub">{{companyAddr}}</view>
+      </view>
+      <view>
+        <view class="doc-title">Proforma Invoice</view>
+        <view class="doc-meta">
+          <text><text style="font-weight:600">No.:</text> {{form.no}}</text>\n
+          <text><text style="font-weight:600">Date:</text> {{form.date}}</text>\n
+          <text><text style="font-weight:600">Valid Until:</text> {{form.valid}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="doc-parties">
+      <view class="doc-party-block">
+        <view class="label">Seller / 卖方</view>
+        <view class="content"><text style="font-weight:600">{{companyName}}</text></view>
+      </view>
+      <view class="doc-party-block">
+        <view class="label">Buyer / 买方</view>
+        <view class="content">
+          <text style="font-weight:600">{{form.buyerName}}</text>\n
+          <text wx:if="{{form.buyerContact}}">Attn: {{form.buyerContact}}</text>\n
+          <text>{{form.buyerAddr}}</text>\n
+          <text wx:if="{{form.buyerTel}}">Tel: {{form.buyerTel}}</text>\n
+          <text wx:if="{{form.buyerEmail}}">Email: {{form.buyerEmail}}</text>
+        </view>
+      </view>
+    </view>
+
+    <view class="doc-table-wrap">
+      <view class="doc-table-row doc-table-header">
+        <text class="col-no">No.</text>
+        <text class="col-desc">Description</text>
+        <text class="col-spec">Spec</text>
+        <text class="col-qty">Qty</text>
+        <text class="col-unit">Unit</text>
+        <text class="col-price">Price</text>
+        <text class="col-amt">Amount</text>
+      </view>
+      <view class="doc-table-row" wx:for="{{form.items}}" wx:key="index">
+        <text class="col-no">{{index + 1}}</text>
+        <text class="col-desc">{{item.desc}}</text>
+        <text class="col-spec">{{item.spec}}</text>
+        <text class="col-qty num">{{item.qty}}</text>
+        <text class="col-unit">{{item.unit}}</text>
+        <text class="col-price num">{{item.price}}</text>
+        <text class="col-amt num">{{item._amt}}</text>
+      </view>
+      <view class="doc-table-row doc-table-footer">
+        <text class="col-total-label" style="flex:1;text-align:right">Total ({{form.currency || 'USD'}}):</text>
+        <text class="col-amt num" style="font-weight:700">{{totalAmount}}</text>
+      </view>
+    </view>
+
+    <view class="doc-footer-info">
+      <view class="doc-footer-block">
+        <view class="label">Terms & Conditions</view>
+        <view class="content">
+          Trade Terms: {{form.terms}}\n
+          Port of Loading: {{form.from}}\n
+          Port of Destination: {{form.to}}\n
+          Payment: {{form.payment}}\n
+          Delivery: {{form.delivery}}
+        </view>
+      </view>
+    </view>
+
+    <view wx:if="{{form.remarks}}" class="doc-footer-info">
+      <view class="doc-footer-block">
+        <view class="label">Remarks</view>
+        <view class="content">{{form.remarks}}</view>
+      </view>
+    </view>
+
+    <view wx:if="{{form.bank}}" class="doc-footer-info">
+      <view class="doc-footer-block">
+        <view class="label">Bank Details</view>
+        <view class="content">{{form.bank}}</view>
+      </view>
+    </view>
+
+    <view class="doc-signature">
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Authorized Signature</view>
+      </view>
+      <view class="sig-block">
+        <view class="sig-line"></view>
+        <view class="sig-label">Company Stamp</view>
+      </view>
+    </view>
+  </view>
+</view>
